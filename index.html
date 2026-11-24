@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="robots" content="noindex" />
+    <title>Lindy lead</title>
+    <style>:root{--bg:#1f2a44;--ink:#f0e2c4;--accent:#b8322a;--gold:#e3b04b;--serif:Georgia, "Times New Roman", serif;--app-w:100vw;--app-h:100vh}@supports (height:100dvh){:root{--app-w:100dvw;--app-h:100dvh}}*{box-sizing:border-box}html,body{width:var(--app-w);height:var(--app-h);background:var(--bg);color:var(--ink);font:16px/1.4 var(--serif);touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;margin:0;overflow:hidden}body.playing,body.playing canvas{touch-action:none}canvas{width:var(--app-w);height:var(--app-h);touch-action:none;display:block;position:fixed;top:0;left:0}.panel{width:var(--app-w);height:var(--app-h);text-align:center;padding:max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:#1f2a44d6;flex-direction:column;align-items:center;gap:12px;display:flex;position:fixed;top:0;left:0;overflow:hidden auto}.panel>:first-child{margin-top:auto}.panel>:last-child{margin-bottom:auto}.hidden{display:none!important}h1{letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-shadow:0 3px #b8322a;margin:0;font-size:clamp(24px,4.4vw,38px);font-weight:800}h1:after{content:"";border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);width:70%;height:4px;margin:8px auto 0;display:block}p{color:#f0e2c4e6;max-width:34em;margin:0}small{color:#f0e2c4bf}.row{flex-wrap:wrap;justify-content:center;gap:10px;display:flex}button{font:inherit;color:var(--bg);background:var(--ink);border:3px solid var(--bg);cursor:pointer;min-width:120px;box-shadow:0 4px 0 #151d33, 0 0 0 2px var(--ink);border-radius:12px;padding:10px 20px;font-weight:800}button.big{background:var(--accent);color:var(--ink);padding:14px 26px;font-size:20px}button.ghost{color:var(--ink);box-shadow:none;background:0 0;border:2px solid #f0e2c499}button:active{box-shadow:0 2px 0 #151d33, 0 0 0 2px var(--ink);transform:translateY(2px)scale(.98)}button.ghost:active{box-shadow:none}button .best{opacity:.85;font-size:13px;font-weight:600;display:block}#pad{width:min(52vh,70vw);height:min(52vh,70vw);width:min(calc(var(--app-h) * .52), 70vw);height:min(calc(var(--app-h) * .52), 70vw);border:6px double var(--gold);touch-action:none;background:#f0e2c41a;border-radius:50%;place-items:center;font-size:22px;font-weight:800;display:grid}.stats{text-align:left;grid-template-columns:auto auto;gap:4px 18px;font-size:20px;display:grid}.stats b{text-align:right;color:var(--gold)}#score-big{color:var(--gold);text-shadow:0 3px #b8322a;font-size:clamp(40px,12vh,64px);font-weight:800;line-height:1}#new-best{color:var(--ink);background:var(--accent);border:3px solid var(--ink);letter-spacing:.05em;border-radius:999px;padding:2px 18px;font-size:22px;font-weight:800}#rotate{text-align:center;background:var(--bg);z-index:9;place-items:center;padding:24px;font-size:22px;display:none;position:fixed;inset:0}@media (orientation:portrait){body.playing #rotate{display:grid}}@media (height<=480px){.panel{padding-top:max(8px, env(safe-area-inset-top));padding-bottom:max(8px, env(safe-area-inset-bottom));gap:6px}h1{font-size:22px}p,small{font-size:13px;line-height:1.3}button{min-width:96px;padding:8px 16px}button.big{padding:8px 18px;font-size:17px}button .best{font-size:12px}#score-big{font-size:44px}.stats{font-size:17px}}</style>
+    <script type="module" crossorigin src="./assets/index-DPnhTqeq.js"></script>
+  </head>
+  <body>
+    <canvas id="game"></canvas>
+
+    <section id="menu" class="panel">
+      <h1>Lindy lead</h1>
+      <p>Lead the couple in time to the music. Pick a tempo to start (the first tap also unlocks the sound).</p>
+      <div class="row" id="tempos"></div>
+      <div class="row"><button class="ghost" id="to-calib">Calibrate (tap along)</button><button class="ghost hidden" id="fs">Full screen</button></div>
+      <small id="offset-note"></small>
+      <p><small><b>S</b> (left thumb / key S) and <b>C</b> (right thumb / key C). Press near an even count (2, 4, 6, 8); the move starts on the next count. While a swing out plays, press <b>C</b> on its count 4 for an outside turn. Every press should be on a count: a stray press resets your chain. Esc or "menu" leaves a song.</small></p>
+      <p><small>Landscape works best on a phone. Wear headphones or use the speaker, then calibrate once per device.</small></p>
+    </section>
+
+    <section id="calib" class="panel hidden">
+      <h1>Calibrate</h1>
+      <p id="calib-text">Tap the circle (or press any key) on every click. First 4 clicks are warm-up.</p>
+      <div id="pad">tap here</div>
+      <div id="calib-result"></div>
+      <div class="row" id="calib-buttons"></div>
+    </section>
+
+    <section id="over" class="panel hidden">
+      <h1>Song over</h1>
+      <div id="score-big">0</div>
+      <div id="new-best" class="hidden">New best!</div>
+      <div class="stats">
+        <span>Longest chain</span><b id="res-chain">0</b>
+        <span>Perfect leads</span><b id="res-perfect">0 of 0</b>
+        <span id="res-best-label">Best at this tempo</span><b id="res-best">0</b>
+      </div>
+      <div class="row">
+        <button class="big" id="again">Play again</button>
+        <button class="ghost" id="to-menu">Menu</button>
+      </div>
+    </section>
+
+    <div id="rotate" class="hidden">Turn your phone sideways to play.</div>
+  </body>
+</html>
